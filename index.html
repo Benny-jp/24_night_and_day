@@ -10,7 +10,6 @@
             --mint-green: #99ffee;
             --logo-black: #2c2c2c;
             --clock-size: 90vmin;
-            /* 追加: 夜間用カラー */
             --night-purple: #99aaff;
         }
         body {
@@ -63,48 +62,54 @@
 
 <script>
     const face = document.getElementById('clock-face');
+
+    // 24時間目盛り（数字）の生成
+    for (let i = 1; i <= 24; i++) {
+        const hContainer = document.createElement('div');
+        hContainer.className = 'marker';
+        hContainer.style.transform = `rotate(${i * 15}deg)`;
+        const hNum = document.createElement('div');
+        hNum.className = 'hour-num';
+        hNum.innerHTML = `<span style="display:block; transform:rotate(${-i * 15}deg)">${i}</span>`;
+        hContainer.appendChild(hNum);
+        face.appendChild(hContainer);
+    }
+
+    // 60分目盛り（00〜55の数字とドット）の生成
     for (let i = 1; i <= 60; i++) {
-        const container = document.createElement('div');
-        container.className = 'marker';
-        if (i <= 24) {
-            const hNum = document.createElement('div');
-            hNum.className = 'hour-num';
-            hNum.innerHTML = `<span style="display:block; transform:rotate(${-i * 15}deg)">${i}</span>`;
-            container.style.transform = `rotate(${i * 15}deg)`;
-            container.appendChild(hNum);
-            face.appendChild(container.cloneNode(true));
-        }
-        const minContainer = document.createElement('div');
-        minContainer.className = 'marker';
+        const mContainer = document.createElement('div');
+        mContainer.className = 'marker';
         const rotation = i * 6;
-        minContainer.style.transform = `rotate(${rotation}deg)`;
+        mContainer.style.transform = `rotate(${rotation}deg)`;
+        
         if (i % 5 === 0) {
             const mNum = document.createElement('div');
             mNum.className = 'min-num';
             const label = i === 60 ? '00' : i.toString().padStart(2, '0');
             mNum.innerHTML = `<span style="display:block; transform:rotate(${-rotation}deg)">${label}</span>`;
-            minContainer.appendChild(mNum);
+            mContainer.appendChild(mNum);
         } else {
             const dot = document.createElement('div');
             dot.className = 'dot-marker';
-            minContainer.appendChild(dot);
+            mContainer.appendChild(dot);
         }
-        face.appendChild(minContainer);
+        face.appendChild(mContainer);
     }
 
     function update() {
         const now = new Date();
-        const s = now.getSeconds(); const m = now.getMinutes(); const h = now.getHours();
+        const s = now.getSeconds(); 
+        const m = now.getMinutes(); 
+        const h = now.getHours();
         
-        // 夜間判定 (21:00 - 5:59)
         const isNight = h >= 21 || h < 6;
         const root = document.documentElement;
 
         if (isNight) {
             root.style.setProperty('--bg-top', 'var(--night-purple)');
-            root.style.setProperty('--hour-color', '#ffd700'); // 金 (Gold)
-            root.style.setProperty('--min-color', '#c0c0c0');  // 銀 (Silver)
-            root.style.setProperty('--sec-color', '#cd7f32');  // 銅 (Bronze)
+            root.style.setProperty('--hour-color', '#ffd700'); 
+            root.style.setProperty('--min-color', '#c0c0c0');  
+            root.style.setProperty('--sec-color', '#cd7f32');
         } else {
             root.style.setProperty('--bg-top', 'var(--mint-green)');
             root.style.setProperty('--hour-color', '#222');
