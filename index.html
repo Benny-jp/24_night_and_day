@@ -11,7 +11,7 @@
             --logo-black: #2c2c2c;
             --clock-size: 90vmin;
             /* 追加: 夜間用カラー */
-            --dark-purple: #99aaff;
+            --night-purple: #99aaff;
         }
         body {
             display: flex; justify-content: center; align-items: center;
@@ -101,7 +101,7 @@
         const root = document.documentElement;
 
         if (isNight) {
-            root.style.setProperty('--bg-top', 'var(--dark-blue)');
+            root.style.setProperty('--bg-top', 'var(--night-purple)');
             root.style.setProperty('--hour-color', '#ffd700'); // 金 (Gold)
             root.style.setProperty('--min-color', '#c0c0c0');  // 銀 (Silver)
             root.style.setProperty('--sec-color', '#cd7f32');  // 銅 (Bronze)
